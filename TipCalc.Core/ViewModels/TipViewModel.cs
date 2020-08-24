@@ -16,7 +16,17 @@ namespace TipCalc.Core.ViewModels
         {
             _navigationService = navigationService;
             _calculationService = calculationService;
-            NavigateCommand = new MvxCommand(() => _navigationService.Navigate<DetailsViewModel>());
+            NavigateCommand = new MvxCommand(() => Navigate());
+            Session.TipViewModel = this;
+        }
+
+        private Task<bool> Navigate()
+        {
+            if (Session.DetailsViewModel == null)
+            {
+                return _navigationService.Navigate<DetailsViewModel>();
+            }
+            return _navigationService.Navigate(Session.DetailsViewModel);
         }
 
         public override async Task Initialize()
@@ -74,7 +84,7 @@ namespace TipCalc.Core.ViewModels
         {
             base.ViewAppeared();
 
-            //Code navigate between the screens multiple times; Just to see better the memory increase.
+            // Code navigate between the screens multiple times; Just to see better the memory increase.
             //if (Session.DetailsCount < 50)
             //{
             //    NavigateCommand.Execute();

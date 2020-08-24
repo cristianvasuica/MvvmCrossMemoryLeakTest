@@ -16,19 +16,25 @@ namespace TipCalc.Core.ViewModels
         public DetailsViewModel(IMvxNavigationService navigationService)
         {
             _navigationService = navigationService;
-            CloseCommand = new MvxCommand(() => _navigationService.Navigate<TipViewModel>());
+            CloseCommand = new MvxCommand(() => Navigate());
             CollectCommand = new MvxCommand(() => GC.Collect());
+            Session.DetailsViewModel = this;
+        }
+
+        private void Navigate()
+        {
+            _navigationService.Navigate(Session.TipViewModel);
         }
 
         public override void ViewAppeared()
         {
             base.ViewAppeared();
 
-            Session.DetailsCount += 1;
-            if (Session.DetailsCount < 100)
-            {
-                CloseCommand.Execute();
-            }
+            //Session.DetailsCount += 1;
+            //if (Session.DetailsCount < 100)
+            //{
+            //    CloseCommand.Execute();
+            //}
         }
     }
 }
